@@ -1,0 +1,63 @@
+/* Estilo claro minimalista con bordes redondeados */
+body {
+  font-family: Arial, sans-serif;
+  background:#63b375;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  margin:0;
+}
+
+.container {
+  background:#b0c16d;
+  padding:30px;
+  border-radius:15px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.08);
+  text-align:center;
+  width:320px;
+}
+
+h2 {
+  margin-top:0;
+  font-weight:600;
+}
+
+input {
+  width:60px;
+  margin:5px;
+  padding:5px;
+  border:1px solid #e0e0e0;
+  border-radius:8px;
+  text-align:center;
+  outline:none;
+}
+
+select {
+  padding:5px;
+  margin:10px 0;
+  border-radius:8px;
+  border:1px solid #e0e0e0;
+  outline:none;
+}
+
+button {
+  margin-top:10px;
+  padding:8px 15px;
+  background:#5ed666;
+  color:#000000;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+}
+
+button:hover{
+  background:#4d4921;
+  color: white;
+}
+
+.resultado{
+  margin-top:15px;
+  font-weight:600;
+  white-space:pre;
+}

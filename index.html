@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Matriz Inversa</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h2>Cálculo de Matriz Inversa</h2>
+    <label for="sizeSelect">Selecciona tamaño:</label>
+    <select id="sizeSelect" onchange="generarInputs()">
+      <option value="2">2 x 2</option>
+      <option value="3">3 x 3</option>
+    </select>
+
+    <div id="inputsContainer"></div>
+
+    <button onclick="calcularInversa()">Calcular Inversa</button>
+    <div class="resultado" id="resultado"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
