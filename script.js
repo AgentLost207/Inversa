@@ -1,4 +1,4 @@
-// Genera los inputs según el tamaño seleccionado
+// ------- genera inputs según tamaño seleccionado -----
 function generarInputs() {
   const size = parseInt(document.getElementById("sizeSelect").value);
   const cont = document.getElementById("inputsContainer");
@@ -15,15 +15,47 @@ function generarInputs() {
     }
     cont.appendChild(fila);
   }
-  document.getElementById("resultado").innerText = "";
+  document.getElementById("resultado").innerHTML = "";
 }
 
-// Calcula la inversa usando Gauss-Jordan
-function calcularInversa() {
-  const size = parseInt(document.getElementById("sizeSelect").value);
-  let matriz = [];
+// -------  convierte número a fracción (si es racional) -----
+function toFraction(num, tol = 1e-6, maxDen = 1000) {
+  let sign = Math.sign(num);
+  num = Math.abs(num);
 
-  // Construir matriz aumentada [A | I]
+  // Si es cercano a un entero → devolver entero
+  if (Math.abs(num - Math.round(num)) < tol) {
+    return (sign < 0 ? "-" : "") + Math.round(num);
+  }
+
+  let bestNum = 1, bestDen = 1;
+  let errBest = Math.abs(num - bestNum / bestDen);
+
+  for (let den = 1; den <= maxDen; den++) {
+    let numTemp = Math.round(num * den);
+    let err = Math.abs(num - numTemp / den);
+    if (err < errBest) {
+      bestNum = numTemp;
+      bestDen = den;
+      errBest = err;
+      if (errBest < tol) break;
+    }
+  }
+
+  // Si el error es pequeño, devolvemos como fracción
+  if (errBest < tol) {
+    return (sign < 0 ? "-" : "") + bestNum + "/" + bestDen;
+  }
+  // si el error no es suficientemente pequeño → decimal con 4 decimales
+  return ((sign < 0 ? "-" : "") + num.toFixed(4));
+}
+
+// ------- Gauss-Jordan e impresión de inversa ------------
+function calcularInversa() {
+  const size   = parseInt(document.getElementById("sizeSelect").value);
+  let matriz   = [];
+
+  // Crear matriz aumentada [A | I]
   for (let i = 0; i < size; i++) {
     let fila = [];
     for (let j = 0; j < size; j++) {
@@ -35,9 +67,9 @@ function calcularInversa() {
     matriz.push(fila);
   }
 
-  // Gauss-Jordan
+  // Método Gauss-Jordan
   for (let i = 0; i < size; i++) {
-    // Pivoteo parcial
+    // pivoteo parcial
     let maxRow = i;
     for (let k = i + 1; k < size; k++) {
       if (Math.abs(matriz[k][i]) > Math.abs(matriz[maxRow][i])) {
@@ -51,10 +83,10 @@ function calcularInversa() {
       return;
     }
 
-    // Normalizar fila
-    let pivote = matriz[i][i];
+    // Normalizar
+    let piv = matriz[i][i];
     for (let j = 0; j < 2 * size; j++) {
-      matriz[i][j] /= pivote;
+      matriz[i][j] /= piv;
     }
 
     // Hacer ceros en otras filas
@@ -68,23 +100,19 @@ function calcularInversa() {
     }
   }
 
-  // Extracción de la parte derecha (matriz inversa)
-  let inversa = [];
+  // Obtener parte derecha (inversa)
+  let texto = "Matriz inversa:\n";
   for (let i = 0; i < size; i++) {
     let fila = [];
     for (let j = 0; j < size; j++) {
-      fila.push(Math.round(matriz[i][j + size]));
+      let val = matriz[i][j + size];
+      fila.push(toFraction(val));
     }
-    inversa.push(fila);
+    texto += fila.join("   ") + "\n";
   }
 
-  // Mostrar resultado
-  let texto = "Matriz inversa:\n";
-  inversa.forEach(fila => {
-    texto += fila.join("  ") + "\n";
-  });
   document.getElementById("resultado").innerText = texto;
 }
 
-// Inicial (2x2 por defecto)
+// inicial
 generarInputs();
